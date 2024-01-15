@@ -32,8 +32,7 @@ void renderFood(SDL_Renderer* renderer, SDL_Rect food) {
 }
 
 void renderScore(SDL_Renderer* renderer, int tailLength, int scale, int wScale) {
-    // Dummy function since SDL_ttf is not included
-    // You can replace this function with your custom rendering logic if needed
+    
 }
 
 bool checkCollision(int foodx, int foody, int playerx, int playery) {
@@ -291,7 +290,7 @@ int main(int argc, char* argv[]) {
         }
 
         // Game over if player out of bounds, also resets the game state
-        if (x < 0 || y < 0 || x > scale * wScale - scale || y > scale * wScale - scale||(x == 408 && y == 480)||(x == 480 && y == 456)||(x == 480 && y == 408)) {
+        if (x < 0 || y < 0 || x > scale * wScale - scale || y > scale * wScale - scale) {
             gameOver(renderer, event, scale, wScale, tailLength);
             x = 0;
             y = 0;
