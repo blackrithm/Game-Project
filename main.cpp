@@ -7,7 +7,6 @@
 #undef main
 
 using namespace std;
-int score=0;
 
 void renderPlayer(SDL_Renderer* renderer, SDL_Rect player, int x, int y, int scale, vector<int> tailX, vector<int> tailY, int tailLength) {
     SDL_SetRenderDrawColor(renderer, 255, 165, 0, 255);
@@ -48,7 +47,7 @@ pair<int, int> getFoodSpawn(vector<int> tailX, vector<int> tailY, int playerX, i
     srand(time(0));
     x = scale * (rand() % wScale);
     y = scale * (rand() % wScale);
-    score+=1;
+    
     valid = true;
 
     // Check all tail blocks and player block
@@ -69,15 +68,12 @@ pair<int, int> getFoodSpawn(vector<int> tailX, vector<int> tailY, int playerX, i
 
     return foodLoc;
 }
-
 void gameOver(SDL_Renderer* renderer, SDL_Event event, int scale, int wScale, int tailLength) {
-    // Dummy function since SDL_ttf is not included
-    // You can replace this function with your custom rendering logic if needed
+    
 }
 
 void youWin(SDL_Renderer* renderer, SDL_Event event, int scale, int wScale, int tailLength) {
-    // Dummy function since SDL_ttf is not included
-    // You can replace this function with your custom rendering logic if needed
+    
 }
 
 int main(int argc, char* argv[]) {
@@ -329,7 +325,7 @@ int main(int argc, char* argv[]) {
         // Put everything on screen
         SDL_RenderPresent(renderer);
 
-        // Choose a color and fill the entire window with it, this resets everything before the next frame
+        // color and fill the entire window with it, this resets everything before the next frame
         SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
         SDL_RenderClear(renderer);
     }
