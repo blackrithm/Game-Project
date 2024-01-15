@@ -1,0 +1,1 @@
+g++ -Llib main.cpp -lSDL2
