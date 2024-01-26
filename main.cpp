@@ -10,6 +10,7 @@ const int GRID_SIZE = 15;
 SDL_Window* window = nullptr;
 SDL_Renderer* renderer = nullptr;
 Mix_Chunk* wavFile;
+Mix_Chunk* wavFile1;
 Mix_Chunk* gameOver;
 struct Snake {
     vector<pair<int, int>> body;
@@ -203,7 +204,7 @@ void update() {
         score+=10;
         sp.x= -100;
         sp.y= -100;
-        Mix_PlayChannel(-1, wavFile, 0);
+        Mix_PlayChannel(-1, wavFile1, 0);
     }
     else {
         snake.body.pop_back();
@@ -222,7 +223,7 @@ void renderScore() {
 	scoreRect.w = 160;
 	scoreRect.h = 30;
 	scoreRect.x = ((SCREEN_WIDTH) / 2) - (scoreRect.w / 2);
-	scoreRect.y = 0;
+	scoreRect.y = 1;
 	SDL_RenderCopy(renderer, scoreMessage, NULL, &scoreRect);
 
 	TTF_CloseFont(font);
@@ -338,6 +339,7 @@ int main()
     SDL_Init(SDL_INIT_EVERYTHING);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
     wavFile = Mix_LoadWAV("eat.wav");
+    wavFile1 = Mix_LoadWAV("bonus.mp3");
     gameOver = Mix_LoadWAV("gameOver.wav");
     Mix_Music* BGM = Mix_LoadMUS("background_music.mp3");
     Mix_PlayMusic(BGM, -1);
@@ -359,7 +361,7 @@ int main()
         SDL_Delay((100-(1*score)));
     }
     renderGameOver();
-    SDL_Delay(1000);
+    SDL_Delay(1500);
     snake.body.clear();
     close();
     return 0;
