@@ -27,6 +27,7 @@ bool pause ;
 bool f=true;
 int score;
 int regfoodcount = 0;
+
 void drawCirc (int X, int Y, int radius)
 {
     while (radius--) {
@@ -93,8 +94,8 @@ void initialize() {
     TTF_Init();
     snake.body.push_back({0, 0});
    snake.body.push_back({1, 0});
-   // snake.body.push_back({2, 0});
-   // snake.body.push_back({3, 0});
+ snake.body.push_back({2, 0});
+ snake.body.push_back({3, 0});
     snake.direction = 'R';
     sp.x=-100;
     sp.y=-100;
@@ -161,27 +162,27 @@ void update() {
     pair<int, int> newHead = snake.body.front();
     switch (snake.direction) {
         case 'U':
-            //if (snake.body.front().second > 0)
+            if (snake.body.front().second > 0)
                 newHead.second -= GRID_SIZE;
-            //else
-                //newHead.second = SCREEN_HEIGHT-GRID_SIZE;
+            else
+                newHead.second = SCREEN_HEIGHT-GRID_SIZE;
             break;
         case 'D':
-            //if (snake.body.front().second >= SCREEN_HEIGHT-GRID_SIZE)
-                //newHead.second = 0;
-            //else
+            if (snake.body.front().second >= SCREEN_HEIGHT-GRID_SIZE)
+                newHead.second = 0;
+            else
                 newHead.second += GRID_SIZE;
             break;
         case 'L':
-            //if (snake.body.front().first > 0)
+            if (snake.body.front().first > 0)
                 newHead.first -= GRID_SIZE;
-            ///else
-                //newHead.first = SCREEN_WIDTH-GRID_SIZE;
+            else
+                newHead.first = SCREEN_WIDTH-GRID_SIZE;
             break;
         case 'R':
-            //if (snake.body.front().first >= SCREEN_WIDTH-GRID_SIZE)
-                //newHead.first = 0;
-            //else
+            if (snake.body.front().first >= SCREEN_WIDTH-GRID_SIZE)
+                newHead.first = 0;
+            else
                 newHead.first += GRID_SIZE;
             break;
     }
@@ -209,7 +210,7 @@ void update() {
     }
 }
 void renderScore() {
-	SDL_Color Red = { 155, 170, 70 };
+	SDL_Color Red = { 0, 0, 0 };
 	TTF_Font* font = TTF_OpenFont((char*)"Aller_Rg.ttf", 12);
 	if (font == NULL) {
 		cout << "Font loading error" << endl;
@@ -227,11 +228,11 @@ void renderScore() {
 	TTF_CloseFont(font);
 }
 void render() {
-    SDL_SetRenderDrawColor(renderer, 0, 110, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
     
 //obs rect
-    SDL_SetRenderDrawColor(renderer, 50, 25, 74, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 125, 0, 255);
 
                 SDL_Rect prince = {300, 75, 450, 30};                
                 SDL_RenderFillRect(renderer, &prince);
@@ -241,32 +242,34 @@ void render() {
                SDL_Rect prince2 = {720, 75, 30, 100};              
                  SDL_RenderFillRect(renderer, &prince2);
 
-                SDL_Rect prince3 = {300, 500, 450, 30};
+                SDL_Rect prince3 = {300, 500, 450, 40};
                 SDL_RenderFillRect(renderer, &prince3);
                 SDL_Rect prince4 = {300, 420, 30, 100};
                 SDL_RenderFillRect(renderer, &prince4);
                 SDL_Rect prince5 = {720, 420, 30, 100};
                 SDL_RenderFillRect(renderer, &prince5);
-                 SDL_Rect prince6 = {430,0,160, 50};
+                
+                SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+                 SDL_Rect prince6 = {430,5,160, 30};
                 SDL_RenderFillRect(renderer, &prince6);
                 renderScore();
     // Render Snake
-    SDL_SetRenderDrawColor(renderer, 160, 155, 158,100);
+    SDL_SetRenderDrawColor(renderer, 255, 0, 150,255);
     const auto& head = *snake.body.begin();
     SDL_Rect rect = {head.first, head.second, GRID_SIZE, GRID_SIZE};
     SDL_RenderFillRect(renderer, &rect);
-    SDL_SetRenderDrawColor(renderer, 242, 243, 245, 0);
+    SDL_SetRenderDrawColor(renderer, 255,0 , 255, 255);
     for (auto it = next(snake.body.begin()); it != snake.body.end(); ++it) {
         const auto& segment = *it;
         SDL_Rect rect = {segment.first, segment.second, GRID_SIZE, GRID_SIZE};
         SDL_RenderFillRect(renderer, &rect);
     }
     // Render Food
-    SDL_SetRenderDrawColor(renderer, 255, 174, 66, 255);
+    SDL_SetRenderDrawColor(renderer, 255, 174, 70, 255);
     SDL_Rect foodRect = {food.x, food.y, GRID_SIZE, GRID_SIZE};
     SDL_RenderFillRect(renderer, &foodRect);
 
-    SDL_SetRenderDrawColor(renderer, 0, 0, 255, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 100, 255, 255);
     drawCirc (sp.x, sp.y, GRID_SIZE);
     SDL_RenderPresent(renderer);
 }
@@ -286,7 +289,7 @@ bool checkCollision() {
                 (snake.body.front().first >= 720 && snake.body.front().first <720+30 &&
                 snake.body.front().second >= 75 && snake.body.front().second <75+100) ||
                 (snake.body.front().first>= 300 && snake.body.front().first < 300+450 &&
-               snake.body.front().second >= 490 && snake.body.front().second < 510+30) ||
+               snake.body.front().second >= 490 && snake.body.front().second < 510+19) ||
                 (snake.body.front().first >= 300 && snake.body.front().first < 300+30 &&
                 snake.body.front().second >= 420 && snake.body.front().second < 420+100 ) ||
                 (snake.body.front().first >= 720 && snake.body.front().first < 720+30 &&
@@ -329,8 +332,7 @@ void renderGameOver() {
 	SDL_RenderCopy(renderer, GOMessage, NULL, &GORect);
     SDL_RenderPresent(renderer);
     SDL_Delay(1000);
-	TTF_CloseFont(font);
-}
+	TTF_CloseFont(font);  }
 int main()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
@@ -339,7 +341,7 @@ int main()
     gameOver = Mix_LoadWAV("gameOver.wav");
     Mix_Music* BGM = Mix_LoadMUS("background_music.mp3");
     Mix_PlayMusic(BGM, -1);
-    Mix_VolumeMusic(20);
+    Mix_VolumeMusic(15);
     initialize();
     while (!quit) {
         processInput ();
@@ -354,7 +356,7 @@ int main()
             break;
         }
         render();
-        SDL_Delay((100-(0.5*score)));
+        SDL_Delay((100-(1*score)));
     }
     renderGameOver();
     SDL_Delay(1000);
@@ -362,4 +364,6 @@ int main()
     close();
     return 0;
 }
+
+
 
