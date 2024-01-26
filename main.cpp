@@ -41,20 +41,20 @@ void drawCirc (int X, int Y, int radius)
 void generateFood() {
     food.x = rand() % (SCREEN_WIDTH / GRID_SIZE) * GRID_SIZE;
     food.y = rand() % (SCREEN_HEIGHT / GRID_SIZE) * GRID_SIZE;
-    if ((food.x >= 300 && food.x < 300+450 &&
-        food.y >= 75 && food.y < 75+30) ||
-        (food.x >= 300 && food.x < 300+30 &&
-        food.y >= 75 && food.y < 75+100) ||
-        (food.x >= 720 && food.x <720+30 &&
-        food.y >= 75 && food.y <75+100) ||
-        (food.x >= 300 && food.x < 300+450 &&
-        food.y >= 500 && food.y < 500+30) ||
-        (food.x >= 300 && food.x < 300+30 &&
-        food.y >= 420 && food.y < 420+100 ) ||
-        (food.x >= 720 && food.x < 720+30 &&
-        food.y >= 420 && food.y < 420+100)|| 
-       (food.x >= 430 && food.x < 430+160 &&
-        food.y >= 0 && food.y < 0+50) )
+    if ((food.x >= 300 && food.x <= 300+450 &&
+        food.y >= 75 && food.y <= 75+30) ||
+        (food.x >= 300 && food.x <= 300+30 &&
+        food.y >= 75 && food.y <= 75+100) ||
+        (food.x >= 720 && food.x <= 720+30 &&
+        food.y >= 75 && food.y <= 75+100) ||
+        (food.x >= 300 && food.x <= 300+450 &&
+        food.y >= 500 && food.y <= 500+30) ||
+        (food.x >= 300 && food.x <= 300+30 &&
+        food.y >= 420 && food.y <= 420+100 ) ||
+        (food.x >= 720 && food.x <= 720+30 &&
+        food.y >= 420 && food.y <= 420+100)|| 
+       (food.x >= 430 && food.x <= 430+160 &&
+        food.y >= 0 && food.y <= 0+50) )
         {
             generateFood();
         }
@@ -92,7 +92,7 @@ void initialize() {
     renderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
     TTF_Init();
     snake.body.push_back({0, 0});
-   // snake.body.push_back({1, 0});
+   snake.body.push_back({1, 0});
    // snake.body.push_back({2, 0});
    // snake.body.push_back({3, 0});
     snake.direction = 'R';
@@ -157,30 +157,31 @@ void update() {
         sp.x = -100;
         sp.y = -100;
     }
+    //vector
     pair<int, int> newHead = snake.body.front();
     switch (snake.direction) {
         case 'U':
-            if (snake.body.front().second > 0)
+            //if (snake.body.front().second > 0)
                 newHead.second -= GRID_SIZE;
-            else
-                newHead.second = SCREEN_HEIGHT-GRID_SIZE;
+            //else
+                //newHead.second = SCREEN_HEIGHT-GRID_SIZE;
             break;
         case 'D':
-            if (snake.body.front().second >= SCREEN_HEIGHT-GRID_SIZE)
-                newHead.second = 0;
-            else
+            //if (snake.body.front().second >= SCREEN_HEIGHT-GRID_SIZE)
+                //newHead.second = 0;
+            //else
                 newHead.second += GRID_SIZE;
             break;
         case 'L':
-            if (snake.body.front().first > 0)
+            //if (snake.body.front().first > 0)
                 newHead.first -= GRID_SIZE;
-            else
-                newHead.first = SCREEN_WIDTH-GRID_SIZE;
+            ///else
+                //newHead.first = SCREEN_WIDTH-GRID_SIZE;
             break;
         case 'R':
-            if (snake.body.front().first >= SCREEN_WIDTH-GRID_SIZE)
-                newHead.first = 0;
-            else
+            //if (snake.body.front().first >= SCREEN_WIDTH-GRID_SIZE)
+                //newHead.first = 0;
+            //else
                 newHead.first += GRID_SIZE;
             break;
     }
@@ -226,20 +227,19 @@ void renderScore() {
 	TTF_CloseFont(font);
 }
 void render() {
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+    SDL_SetRenderDrawColor(renderer, 0, 110, 0, 255);
     SDL_RenderClear(renderer);
     
 //obs rect
-    SDL_SetRenderDrawColor(renderer, 0, 25, 74, 255);
+    SDL_SetRenderDrawColor(renderer, 50, 25, 74, 255);
 
                 SDL_Rect prince = {300, 75, 450, 30};                
                 SDL_RenderFillRect(renderer, &prince);
                 
                 SDL_Rect prince1 = {300, 75, 30, 100};             
                   SDL_RenderFillRect(renderer, &prince1);
-               
-                SDL_Rect prince2 = {720, 75, 30, 100};              
-                  SDL_RenderFillRect(renderer, &prince2);
+               SDL_Rect prince2 = {720, 75, 30, 100};              
+                 SDL_RenderFillRect(renderer, &prince2);
 
                 SDL_Rect prince3 = {300, 500, 450, 30};
                 SDL_RenderFillRect(renderer, &prince3);
@@ -272,11 +272,11 @@ void render() {
 }
 bool checkCollision() {
     // Check collision with screen boundaries
-    /*if (snake.body.front().first < 0 || snake.body.front().first >= SCREEN_WIDTH ||
-        snake.body.front().second < 0 || snake.body.front().second >= SCREEN_HEIGHT) {
+    if (snake.body.front().first < 0 || snake.body.front().first > SCREEN_WIDTH ||
+        snake.body.front().second < 0 || snake.body.front().second > SCREEN_HEIGHT) {
         cout << "Game Over! Collision with screen boundaries." << endl;
         return true;
-    }*/
+    }
     // Check collision with obstracle
    
         if ((   snake.body.front().first >= 300 && snake.body.front().first< 300+450 &&
@@ -290,9 +290,10 @@ bool checkCollision() {
                 (snake.body.front().first >= 300 && snake.body.front().first < 300+30 &&
                 snake.body.front().second >= 420 && snake.body.front().second < 420+100 ) ||
                 (snake.body.front().first >= 720 && snake.body.front().first < 720+30 &&
-                snake.body.front().second >= 420 && snake.body.front().second < 420+100) ||
-                (snake.body.front().first >= 430  && snake.body.front().first < 430+160 &&
-                snake.body.front().second >= 300 && snake.body.front().second <300+50) )
+                snake.body.front().second >= 420 && snake.body.front().second < 420+100)  )
+                //||
+                //(snake.body.front().first >= 430  && snake.body.front().first < 430+160 &&
+               // snake.body.front().second >= 300 && snake.body.front().second <300+50)
                
        {  
 
@@ -330,7 +331,7 @@ void renderGameOver() {
     SDL_Delay(1000);
 	TTF_CloseFont(font);
 }
-int main(int argc, char* argv[])
+int main()
 {
     SDL_Init(SDL_INIT_EVERYTHING);
     Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024);
